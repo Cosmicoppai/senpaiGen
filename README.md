@@ -2,7 +2,10 @@
 
 A Community website for Freshers who have some doubt regarding anything about their new Environment.
 
-Features:- Signup,
+Features:-
+
+           Signup,
+
            Login,
            
            UpdateProfile,
