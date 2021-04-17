@@ -38,7 +38,7 @@ class userManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-    nickname = models.CharField(max_length=50, blank=False, null=False, unique=True)
+    nickname = models.CharField(max_length=20, blank=False, null=False, unique=True)
     email = models.EmailField(max_length=70, blank=False, null=False, unique=True, verbose_name='email address')
     active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False)
@@ -80,9 +80,13 @@ class User(AbstractBaseUser):
 
 class UserData(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    id_proof = models.ImageField(blank=True, null=True, upload_to='media')
-    id_proof_submitted = models.BooleanField(default=False)
+    college = models.CharField(max_length=120, blank=False, null=False, default='kanak-uni')
+    id_proof = models.ImageField(blank=False, null=False, upload_to='media')
     about = models.CharField(max_length=250, blank=True, null=True)
+    profile_pic = models.ImageField(blank=True, null=True, upload_to='media/profile_pic')
+    id_proof_submitted = models.BooleanField(default=True)
+    email_confirmed = models.BooleanField(default=False)
+    id_proof_approved = models.BooleanField(default=False)
 
     def __str__(self):
         return "{} - {}".format(self.user, self.id_proof)
