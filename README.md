@@ -14,4 +14,6 @@ Features:-
            
            User to User Chat Implementation,
            
-           Like and Comments.
+           Like and Comments,
+           
+           Payment Integration.
