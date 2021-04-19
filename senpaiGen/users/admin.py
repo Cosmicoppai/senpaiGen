@@ -4,6 +4,8 @@ from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from post.admin import PostTabularInline
+from comments.admin import CommentTabularInline
 
 User = get_user_model()
 
@@ -30,6 +32,8 @@ class UserAdmin(BaseUserAdmin):
 
     search_fields = ('nickname', 'email',)
     ordering = ('nickname',)
+    inlines = [PostTabularInline, CommentTabularInline]
+
 
 
 admin.site.register(User, UserAdmin)

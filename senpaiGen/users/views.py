@@ -19,7 +19,7 @@ User = get_user_model()
 
 def home_view(request):
     if request.user.is_authenticated:
-        return render(request, 'home.html')
+        return HttpResponseRedirect('/')
     return user_login(request)
 
 
@@ -69,18 +69,18 @@ def ProfileView(request, pk):
         if request.method == 'POST':
             userform = UserView(request.POST, instance=user)
             userdataform = UserDataView(request.POST, request.FILES, instance=user.userdata)
+            if userform.has_changed() or userdataform.has_changed():
+                if userform.is_valid() and userdataform.is_valid():
+                    updated_user = userform.save(commit=False)
+                    updated_user.user = request.user
+                    updated_user.save()
+                    updated_user.userdata.profile_pic = userdataform.cleaned_data.get('profile_pic')
+                    updated_user.userdata.college = userdataform.cleaned_data.get('college')
+                    updated_user.userdata.about = userdataform.cleaned_data.get('about')
+                    updated_user.userdata.save()
 
-            if userform.is_valid() and userdataform.is_valid():
-                updated_user = userform.save(commit=False)
-                updated_user.user = request.user
-                updated_user.save()
-                updated_user.userdata.profile_pic = userdataform.cleaned_data.get('profile_pic')
-                updated_user.userdata.college = userdataform.cleaned_data.get('college')
-                updated_user.userdata.about = userdataform.cleaned_data.get('about')
-                updated_user.userdata.save()
-
-                messages.success(request, _('Profile Updated Successfully'))
-                return redirect(ProfileView, pk=pk,)
+                    messages.success(request, _('Profile Updated Successfully'))
+                    return redirect(ProfileView, pk=pk,)
         return render(request, 'profile_view.html', {'pk': pk,
                                                      'userform': userform,
                                                      'userdataform': userdataform})

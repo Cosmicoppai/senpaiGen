@@ -1,14 +1,14 @@
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 
 
 class userManager(BaseUserManager):
     def create_user(self, nickname, email, password=None, staff=False, active=True, admin=False):
         if nickname and email and password:
             user_obj = self.model(email=self.normalize_email(email),
-                                nickname=nickname,)
+                                  nickname=nickname, )
 
             user_obj.set_password(password)
             user_obj.staff = staff
@@ -19,13 +19,11 @@ class userManager(BaseUserManager):
             return user_obj
         raise ValueError("Enter all the Required Fields")
 
-
     def create_staffuser(self, nickname, email, password):
         user = self.create_user(nickname, email, password)
         user.staff = True
         user.save(using=self.db)
         return user
-
 
     def create_superuser(self, nickname, email, password):
         user = self.create_user(nickname, email, password)
@@ -34,7 +32,6 @@ class userManager(BaseUserManager):
         user.admin = True
         user.save(using=self.db)
         return user
-
 
 
 class User(AbstractBaseUser):
@@ -64,7 +61,6 @@ class User(AbstractBaseUser):
     def has_module_perms(self, app_label):
         return self.is_admin
 
-
     @property
     def is_active(self):
         return self.active
@@ -81,9 +77,9 @@ class User(AbstractBaseUser):
 class UserData(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     college = models.CharField(max_length=120, blank=False, null=False, default='kanak-uni')
-    id_proof = models.ImageField(blank=False, null=False, upload_to='media')
+    id_proof = models.ImageField(blank=False, null=False, upload_to='id_proof')
     about = models.CharField(max_length=250, blank=True, null=True)
-    profile_pic = models.ImageField(blank=True, null=True, upload_to='media/profile_pic')
+    profile_pic = models.ImageField(blank=True, null=True, upload_to='profile_pic')
     id_proof_submitted = models.BooleanField(default=True)
     email_confirmed = models.BooleanField(default=False)
     id_proof_approved = models.BooleanField(default=False)
@@ -93,7 +89,6 @@ class UserData(models.Model):
 
     def get_id_status(self):
         return self.id_proof_submitted
-
 
 
 def post_save_user_model_received(sender, instance, created, *args, **kwargs):
@@ -106,3 +101,16 @@ def post_save_user_model_received(sender, instance, created, *args, **kwargs):
 
 post_save.connect(post_save_user_model_received, sender=settings.AUTH_USER_MODEL)
 
+
+def pre_save_delete_files_on_change(sender, instance, **kwargs):
+    if instance.pk:
+        try:
+            old_profile_pic = UserData.objects.get(pk=instance.pk).profile_pic
+        except User.DoesNotExist:
+            return
+        new_profile_pic = instance.profile_pic
+        if old_profile_pic and old_profile_pic.url != new_profile_pic.url:
+            old_profile_pic.delete(save=False)
+
+
+pre_save.connect(pre_save_delete_files_on_change, sender=UserData)
