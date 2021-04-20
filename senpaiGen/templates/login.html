@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+{% load static %}
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta id="viewport" name="viewport"
+   content="width=device-width, initial-scale=1, minimum-scale=1,
+    maximum-scale=1, viewport-fit=cover">
+  <script
+  src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+   </script>
+  <script type="text/javascript" src="{%static 'scripts/login.js' %}" async></script>
+  <link  rel="stylesheet" href="{%static 'style/login.css' %}">
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=Train+One&family=New+Tegomin&display=swap');
+</style>
+</head>
+<body>
+  <h1 class="title">Senpai Gen</h1><br>
+  <div class="login-form">
+  <form action="." method="post">{% csrf_token %}
+    {% for hidden_field in form.hidden_fields %}
+    <div class="hiddenfield-error">
+      {{ hidden_field }}
+    </div>
+    {% endfor %}
+
+  {% if form.non_field_errors %}
+    {% for error in form.non_field_errors %}
+    <div>
+      {{ error }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+    <div class="Nickname-div">
+      <div class="nickname-error">
+      {{form.nickname.errors}}
+      </div>
+      {{form.nickname.label_tag}}
+      {{form.nickname}}
+  </div>
+
+  <div class="password-div">
+    {{form.password.errors}}
+    {{form.password.label_tag}}
+    {{form.password}}
+    <br>
+    <input class="submit-button" type="submit" value="Log In";>
+  <br>
+  <br>
+</div>
+<div class="signup">
+  <span>Don't have an account: <a href="{% url 'signup' %}" class="signup-text">
+    Sign Up</a></span>
+</div>
+</form>
+</body>
+</html>

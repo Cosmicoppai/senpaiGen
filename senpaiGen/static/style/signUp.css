@@ -1,0 +1,82 @@
+.signup-page-body{
+  background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 11.5%;
+  overflow-y: hidden;
+}
+
+.title{
+  font-family: 'Train One', cursive;
+  font-weight:bold;
+  background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+  color: #FA85CF;
+  text-align: center;
+}
+
+  .btn-grad {background-image: linear-gradient(to right, #1D976C 0%, #93F9B9  51%, #1D976C  100%)}
+  .btn-grad {
+            margin: 20px 0px 0px 120px;
+            padding: 15px 45px;
+            text-align: center;
+            text-transform: uppercase;
+            transition: 0.5s;
+            background-size: 200% auto;
+            color: #FA85A8;
+            font-family: cursive;
+            box-shadow: 0 0 20px #eee;
+            border-radius: 10px;
+            display: block;
+          }
+
+  .btn-grad:hover {
+            background-position: right center;
+            color: #fff;
+            text-decoration: none;
+          }
+
+  .signup{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /*position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);*/
+
+
+  }
+  .nickname-signup-div{
+    color: #FA85A8;
+    margin: 40% 0px 10px 10px;
+    font-size: 20px;
+  }
+
+.password-div label{
+   color: #FA85A8;
+  margin: 10px 0px 0px 5px;
+  font-size: 17px;
+   }
+
+.email-signup-div{
+  color: #FA85A8;
+  margin: 10px 0px 0px 5px;
+  font-size: 17px;
+   }
+
+.id-card{
+  color: #FA85A8;
+  margin: 10px 0px 0px 12px;
+  font-size: 17px;
+}
+.college-name{
+  color: #FA85A8;
+  margin: 10px 0px 0px 5px;
+  font-size: 17px;
+}
+.error{
+color: red;
+}

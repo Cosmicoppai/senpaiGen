@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+{% load static %}
+<html>
+<head>
+  <meta charset="utf-8">
+  <script type="text/javascript" src="{% static 'signUp.js' %}" async></script>
+  <script
+  src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+   </script>
+   <link rel="stylesheet" href="{% static 'style/signUp.css' %}">
+   <style>
+   @import url('https://fonts.googleapis.com/css2?family=Train+One&family=New+Tegomin&display=swap');
+ </style>
+</head>
+<body>
+  <div class="signup-page-body">
+    <h1 class="title">Senpai Gen</h1>
+    <div class="signup">
+      <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+        {% for hidden_field in form.hidden_fields %}
+        <div class="hidden-field-error">
+          {{ hidden_field }}
+        </div>
+        {% endfor %}
+
+        {% if form.non_field_error %}
+          {% for error in non_field_error %}
+        <div class="non=field-errors">
+          {{error }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        <div class="nickname-signup-div">
+          <div class="nickname-errors">
+            {{form.nickname.errors }}
+          </div>
+          {{form.nickname.label_tag }}
+            {{form.nickname}}
+        </div>
+
+        <div class="email-signup-div">
+          <div class="email-errors">
+          {{form.email.errors}}
+            </div>
+          {{form.email.label_tag}}
+          {{form.email}}
+        </div>
+
+        <div class="college-name">
+          <div class="college-errors">
+          {{form.college.errors}}
+            </div>
+          {{form.college.label_tag}}
+          {{form.college}}
+        </div>
+
+        <div class="id-card">
+          <div class="id-card-errors">
+          {{form.id_proof.errors}}
+            </div>
+          {{form.id_proof.label_tag}}
+          {{form.id_proof}}
+        </div>
+        <div class="password-div">
+          <div class="password-errors">
+          {{form.password1.errors}}
+            </div>
+          {{form.password1.label_tag}} {{form.password.help_text}}
+          {{form.password1}}
+        <div class="password-errors">
+          {{form.password2.errors}}
+            </div>
+          {{form.password2.label_tag}}
+          {{form.password2}}
+        </div>
+        <div class="privacy-policy">
+          <label for="privacy-policy">
+          <span id="privacy-policy">I agree with the privacy policy*</span>
+          <input type="checkbox" required>
+          </label>
+        </div>
+        <div class="">
+          <button type="submit" class="btn-grad">Sign Up</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

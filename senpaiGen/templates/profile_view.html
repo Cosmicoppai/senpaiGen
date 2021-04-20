@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Senpai Gen</title>
+</head>
+<body>
+<h1>Senpai Gen</h1>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{message.tags}}" {% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+{{userform.as_p}}
+    {{userdataform.as_p}}
+<button type="submit">Update*</button>
+        <br><br>
+        <a href="{% url 'home' %}">Back</a>
+</form>
+
+</body>
+<script>
+{% if messages %}
+{% for message in messages %}
+    alert('{{message}}')
+    {% endfor %}
+   {% endif %}
+</script>
+</html>

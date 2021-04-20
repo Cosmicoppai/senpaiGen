@@ -1,0 +1,69 @@
+body{
+    background-image: linear-gradient(to right, rgb(182, 244, 146), rgb(51, 139, 147));
+  }
+
+  .title {
+    text-align: center;
+    color: #3268a8;
+    font-family: 'Train One', cursive;
+    background: #DE8E58;
+  }
+  .login-form {
+    background-image: linear-gradient(to right, #e9b7ce, #57ebde);
+    margin-left: 350px;
+    margin-right: 350px;
+    padding-left: 280px;
+    padding-top: 20px;
+    padding-bottom: 250px;
+
+
+  }
+
+  .submit-button{
+    text-align: center;
+    width: 20%;
+    height: 25%;
+    margin-top: 20px;
+    margin-left: 130px;
+    color: inherit;
+    font-family: 'New Tegomin', serif;
+    font-size: 15px;
+    background-color: #edc2a6;
+    font-weight: bold;
+  }
+
+  .submit-button:hover{
+    background-color: #A8C636;
+  }
+
+  .Nickname-div{
+    margin: 20px;
+    margin-left: 0px;
+    font-family: 'Train One', cursive;
+    font-weight:bold;
+    font-size: 18px;
+    color: #DE58A9
+  }
+  .password-div{
+    margin: 0px;
+    font-family: 'Train One', cursive;
+    color: #DE58A9;
+    font-weight:bold;
+    font-size: 18px;
+  }
+
+  .nickname-error{
+  color: red;
+  font-family: 'Train One', cursive;
+  }
+
+  .signup{
+    font-family: 'Train One', cursive;
+    color: #DE58A9;
+  }
+
+  .signup-text{
+    color: #e749de;
+    font-size: 20px;
+  }
+  
