@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import get_user_model, logout, login, authenticate
+from django.contrib.auth import get_user_model, login, authenticate
 from django.http import HttpResponseRedirect
 from .forms import LoginForm, SignupForm
 from django.views.generic import CreateView, UpdateView
@@ -12,6 +12,7 @@ from django.utils.translation import gettext as _
 from .models import UserData
 from django.contrib import messages
 from .forms import UserView, UserDataView
+from post.views import PostListView
 
 # User Model (AbstractBaseUser)
 User = get_user_model()
@@ -19,11 +20,14 @@ User = get_user_model()
 
 def home_view(request):
     if request.user.is_authenticated:
-        return HttpResponseRedirect('/')
+        return PostListView.as_view()(request)
+        # return redirect('post:PostListView')
     return user_login(request)
 
 
 def signup(request):
+    if request.user.is_authenticated:
+        return PostListView.as_view()(request)
     form = SignupForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         user = form.save()
@@ -45,6 +49,8 @@ def signup(request):
 
 
 def user_login(request):
+    if request.user.is_authenticated:
+        return PostListView.as_view()(request)
     form = LoginForm(request.POST or None)
     if form.is_valid():
         nickname = form.cleaned_data.get('nickname')

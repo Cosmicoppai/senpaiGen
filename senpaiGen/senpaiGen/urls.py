@@ -6,12 +6,12 @@ from .import settings
 from django.conf.urls import url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns, static
 from users.views import home_view, user_login, signup, ProfileView
-from post.views import PostListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('django.contrib.auth.urls'),),
-    path('', PostListView.as_view(), name='home'),
+    # path('', PostListView.as_view(), name='home'),
+    path('', home_view, name='home'),
     re_path(r'^login/$', user_login, name='login'),
     re_path(r'^signup/$', signup, name='signup'),
     # url(r'^logout/$', user_logout, name='logout'),
