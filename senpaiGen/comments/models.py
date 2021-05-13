@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 class Comments(models.Model):
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
-    comment = models.TextField(max_length=500, blank=True, null=True, verbose_name=_('Comment'))
+    comment = models.TextField(max_length=500, blank=True, null=True)
     added_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -15,4 +15,7 @@ class Comments(models.Model):
         verbose_name_plural = _('Comments')
 
     def __str__(self):
-        return "{}- {}".format(self.comment, self.author.nickname)
+        try:
+            return "{}- {}".format(self.comment, self.author.nickname)
+        except AttributeError:
+            return "{}- {}".format(self.comment, 'None')

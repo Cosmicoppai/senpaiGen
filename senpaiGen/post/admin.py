@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import Post
 from django.contrib.admin import register
 from comments.admin import CommentTabularInline
+from like.admin import LikeTabularInline
 
 
 class PostTabularInline(admin.TabularInline):
@@ -15,6 +16,6 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ('author', 'title')
     ordering = ['date_added']
     date_hierarchy = 'date_added'
-    inlines = [CommentTabularInline]
+    inlines = [CommentTabularInline, LikeTabularInline]
 
 

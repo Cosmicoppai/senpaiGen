@@ -6,6 +6,7 @@ from django.contrib.auth.admin import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from post.admin import PostTabularInline
 from comments.admin import CommentTabularInline
+from like.admin import LikeTabularInline
 
 User = get_user_model()
 
@@ -32,7 +33,7 @@ class UserAdmin(BaseUserAdmin):
 
     search_fields = ('nickname', 'email',)
     ordering = ('nickname',)
-    inlines = [PostTabularInline, CommentTabularInline]
+    inlines = [PostTabularInline, CommentTabularInline, LikeTabularInline]
 
 
 
