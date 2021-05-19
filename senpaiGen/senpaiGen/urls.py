@@ -6,6 +6,7 @@ from .import settings
 from django.conf.urls import url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns, static
 from users.views import home_view, user_login, signup, ProfileView
+from like.views import add_like
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -16,6 +17,7 @@ urlpatterns = [
     re_path(r'^signup/$', signup, name='signup'),
     # url(r'^logout/$', user_logout, name='logout'),
     path('profile/<int:pk>/', ProfileView, name='ProfileView'),
+    path('post/like/<int:pk>/', add_like, name='like_counter')
 
 ]
 

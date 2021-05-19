@@ -18,3 +18,14 @@ document.getElementById('id2').onclick = function(){
   boi.style.background = "linear-gradient(black, #000099, #66c2ff, #ffcccc, #ffeee6)"
 
 }
+
+document.getElementById('like').onclick = () => {
+let obj = document.getElementById('like');
+if(obj.innerHTML == 'Like'){
+obj.innerHTML = 'Unlike'
+obj.color = 'red'
+}else{
+obj.innerHTML = 'Like'
+obj.color = 'blue'
+}
+}

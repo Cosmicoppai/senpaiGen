@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Test Site</title>
+  <title>Senpai Gen</title>
   <style>
 @import url('https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap');
 </style>
@@ -40,11 +40,17 @@
     <div>
     <ul class="list-group list-group-flush">
       <li class="list-group-item"><h2>Comments</h2></li>
-      {{comments }}
       {% for comment in post.comments.all %}
     <li class="list-group-item">{{comment.comment}}  | {{comment.author}}</li>
   </ul>
         {% endfor %}
+      <hr>
+      <div>
+      <a href="{% url 'like_counter' post.pk %}">
+        <button id="like">Like</button>
+      </a>
+      {{post.total_no_of_likes}}
+      </div>
       </div>
     <br>
     <hr>

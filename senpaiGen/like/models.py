@@ -1,8 +1,8 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-from users.models import User
-from post.models import Post
 from django.utils.translation import gettext_lazy as _
+from post.models import Post
+from users.models import User
 
 
 class Like(models.Model):

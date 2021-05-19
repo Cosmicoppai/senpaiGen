@@ -1,10 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-import datetime
 from users.models import User
 import PIL.Image as Image
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 
 class Post(models.Model):
@@ -13,6 +10,7 @@ class Post(models.Model):
     body = models.TextField(verbose_name=_('Body'), max_length=1000, null=False, blank=False)
     image = models.ImageField(verbose_name=_('Image'), blank=True, null=True, upload_to='post')
     date_added = models.DateTimeField(verbose_name=_('Asked on'), auto_now_add=True)
+    total_no_of_likes = models.PositiveIntegerField(verbose_name=_('Total no of likes'), blank=True, default=0)
 
     class Meta:
         verbose_name = _('Post')
@@ -28,6 +26,3 @@ class Post(models.Model):
             output_size = (1200, 675)
             img.thumbnail(output_size)
             img.save(self.image.path)
-
-
-#
