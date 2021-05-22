@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import ListView
@@ -35,9 +35,9 @@ def comment_add_form(request, pk):
                     comment_obj.save()
                     messages.success(request, _('Comment added Successfully'))
                     return HttpResponseRedirect("/")
-                except:
+                except ObjectDoesNotExist or AttributeError:
                     messages.error(request, _('Unable to add Comment'))
-            messages.error(request, _('Try again later'))
+            messages.error(request, _('Try again later'))  # Later edit this message
         return render(request, 'comments.html', {'commentform':form})
 
-    raise PermissionDenied
+    return HttpResponseRedirect("/")

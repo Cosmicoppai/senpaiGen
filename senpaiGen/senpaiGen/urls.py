@@ -6,7 +6,7 @@ from .import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns, static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin_plus_ultra/', admin.site.urls),  # Changed the path to admin for security purposes
     path('users/', include('django.contrib.auth.urls'),),
     path('', include('users.urls')),
     path('', include('like.urls')),  # To track likes

@@ -31,6 +31,7 @@
   <hr>
   {{ post.body}}
     <div>
+        <img src="{{ post.image.url}}/ ">
     </div>
   <hr style="color:red">
     <div>
@@ -49,7 +50,7 @@
       <a href="{% url 'like_counter' post.pk %}">
         <button id="like">Like</button>
       </a>
-      {{post.total_no_of_likes}}
+         {{post.total_no_of_likes}}
       </div>
       </div>
       <div>
