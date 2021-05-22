@@ -1,5 +1,4 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render
 from .models import Like
 from post.models import Post
 from django.http import HttpResponseRedirect

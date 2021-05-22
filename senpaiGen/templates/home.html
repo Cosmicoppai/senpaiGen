@@ -52,6 +52,9 @@
       {{post.total_no_of_likes}}
       </div>
       </div>
+      <div>
+          <a href="{% url 'add_comment' post.pk %}"><h4>Add comment</h4></a>
+      </div>
     <br>
     <hr>
     {% endfor %}

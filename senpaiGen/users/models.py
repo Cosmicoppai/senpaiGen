@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db.models.signals import post_save, pre_save
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class userManager(BaseUserManager):
@@ -95,7 +96,7 @@ def post_save_user_model_received(sender, instance, created, *args, **kwargs):
     if created:
         try:
             UserData.objects.create(user=instance)
-        except:
+        except ObjectDoesNotExist:
             pass
 
 

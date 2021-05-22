@@ -1,6 +1,6 @@
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import post_save
 from django.dispatch import receiver
-from like.models import Like
+from .models import Like
 from post.models import Post
 
 
@@ -15,7 +15,7 @@ def post_save_like_count(sender, instance, created, *args, **kwargs):
             liked_post.total_no_of_likes += 1  # Update the no of likes
             liked_post.save()  # Save the count
         except AttributeError:
-            pass
+            pass  # Replace this line with logging
 
         # print(instance.post.total_no_of_likes, obj.total_no_of_likes)
 

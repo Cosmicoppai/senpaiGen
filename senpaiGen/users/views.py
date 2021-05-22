@@ -20,7 +20,7 @@ User = get_user_model()
 
 def home_view(request):
     if request.user.is_authenticated:
-        return PostListView.as_view()(request)
+        return PostListView.as_view()(request)  # Home page with list of post
         # return redirect('post:PostListView')
     return user_login(request)
 
@@ -40,7 +40,7 @@ def signup(request):
         user.userdata.id_proof = form.cleaned_data.get('id_proof')
         # user.save()
         user.userdata.save()  # save the userdata model after setting all the required fields
-        messages.success(request, _('Your account was created successfully'))
+        messages.success(request, _('Your account has been created successfully'))
         raw_password = form.cleaned_data.get('password1')
         user = authenticate(username=user.nickname, password=raw_password)
         login(request, user)

@@ -1,23 +1,16 @@
 """Main urls.py"""
 
 from django.contrib import admin
-from django.urls import path, include, re_path
+from django.urls import path, include
 from .import settings
-from django.conf.urls import url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns, static
-from users.views import home_view, user_login, signup, ProfileView
-from like.views import add_like
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('django.contrib.auth.urls'),),
-    # path('', PostListView.as_view(), name='home'),
-    path('', home_view, name='home'),
-    re_path(r'^login/$', user_login, name='login'),
-    re_path(r'^signup/$', signup, name='signup'),
-    # url(r'^logout/$', user_logout, name='logout'),
-    path('profile/<int:pk>/', ProfileView, name='ProfileView'),
-    path('post/like/<int:pk>/', add_like, name='like_counter')
+    path('', include('users.urls')),
+    path('', include('like.urls')),  # To track likes
+    path('', include('comments.urls')),
 
 ]
 

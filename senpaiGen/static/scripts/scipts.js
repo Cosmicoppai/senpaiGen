@@ -23,9 +23,9 @@ document.getElementById('like').onclick = () => {
 let obj = document.getElementById('like');
 if(obj.innerHTML == 'Like'){
 obj.innerHTML = 'Unlike'
-obj.color = 'red'
+obj.style.color = 'red'
 }else{
 obj.innerHTML = 'Like'
-obj.color = 'blue'
+obj.style.color = 'blue'
 }
 }
