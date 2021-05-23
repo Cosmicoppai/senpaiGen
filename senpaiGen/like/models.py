@@ -5,8 +5,12 @@ from post.models import Post
 from users.models import User
 
 
+def get_deleted_user_instance():
+    return User.objects.get_or_create(nickname=_('Anon'))[0]  # Anon is the nickname/short-name for Anonomyous
+
+
 class Like(models.Model):
-    liked_user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    liked_user = models.ForeignKey(User, null=True, on_delete=models.SET(get_deleted_user_instance))
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
     like = models.PositiveSmallIntegerField(validators=[
         MinValueValidator(0),
