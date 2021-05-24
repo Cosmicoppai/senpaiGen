@@ -21,8 +21,11 @@ class Post(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        img = Image.open(self.image.path)
-        if img.height > 1200 and img.width > 675:
-            output_size = (1200, 675)
-            img.thumbnail(output_size)
-            img.save(self.image.path)
+        try:
+            img = Image.open(self.image.path)
+            if img.height > 1200 and img.width > 675:
+                output_size = (1200, 675)
+                img.thumbnail(output_size)
+                img.save(self.image.path)
+        except ValueError:
+            pass

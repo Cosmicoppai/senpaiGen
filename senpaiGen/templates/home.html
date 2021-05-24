@@ -19,51 +19,17 @@
 </ul>
 {% endif %}
 
-  <body class="first_body">
-    <p class="first" id="id1">機能していますか?</p>
-    <div class="container">
-      <button class="ogbtn" id="id2" type="submit">Check</button>
-    </div>
-  <div>
-  {% for post in object_list %}
-  {% if post.title %}
-  <h3>{{post.title}}</h3>
-  <hr>
-  {{ post.body}}
-    <div>
-        <img src="{{ post.image.url}}/ ">
-    </div>
-  <hr style="color:red">
-    <div>
-  {{post.author}} | {{post.date_added}}
-    {% endif %}
-    </div>
-    <div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item"><h2>Comments</h2></li>
-      {% for comment in post.comments.all %}
-    <li class="list-group-item">{{comment.comment}}  | {{comment.author}}</li>
-  </ul>
-        {% endfor %}
-      <hr>
-      <div>
-      <a href="{% url 'like_counter' post.pk %}">
-        <button id="like">Like</button>
-      </a>
-         {{post.total_no_of_likes}}
-      </div>
-      </div>
-      <div>
-          <a href="{% url 'add_comment' post.pk %}"><h4>Add comment</h4></a>
-      </div>
-    <br>
-    <hr>
-    {% endfor %}
+  <body class="main-body">
+  <div id="post">
+
 </div>
   <br>
+  <button id="load-more-button">Load More Post's</button>
   <hr>
+  <div><h2 id="endBox"></h2></div>
     </body>
   <a href="{% url 'ProfileView' user.pk %}">Edit Profile</a>
   </div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></></script>
 <script type="text/javascript" src="{% static 'scripts/scipts.js' %}" async></script>
 </html>

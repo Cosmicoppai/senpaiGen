@@ -11,6 +11,7 @@ urlpatterns = [
     path('', include('users.urls')),
     path('', include('like.urls')),  # To track likes
     path('', include('comments.urls')),
+    path('', include('post.urls')),  # To load post data via ajax
 
 ]
 

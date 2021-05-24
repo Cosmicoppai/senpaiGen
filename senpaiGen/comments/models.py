@@ -20,6 +20,6 @@ class Comments(models.Model):
 
     def __str__(self):
         try:
-            return "{}- {}".format(self.comment, self.author.nickname)
+            return "{} - {}".format(self.comment, self.author.nickname)
         except AttributeError:
-            return "{}- {}".format(self.comment, 'None')
+            return "{} - {}".format(self.comment, 'None')

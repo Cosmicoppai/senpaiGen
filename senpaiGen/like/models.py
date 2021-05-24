@@ -24,6 +24,6 @@ class Like(models.Model):
 
     def __str__(self):
         try:
-            return "{} - {}".format(self.post.title, self.liked_user.nickname)
+            return self.liked_user.nickname
         except AttributeError:
-            return "{} - {}".format(self.post.title, 'None')
+            return 'Anon'
