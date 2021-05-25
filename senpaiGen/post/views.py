@@ -3,7 +3,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.views.generic import ListView
 from .models import Post
-from like.models import Like
 
 
 class PostListView(LoginRequiredMixin, ListView):
@@ -20,14 +19,15 @@ def load_post(request, no_of_posts):  # It'll take a request argument and a how 
     visible = 3
     upper_limit = no_of_posts
     lower_limit = upper_limit - visible
-    qs = Post.objects.all()  # query all the posts from database
-    size = qs.count()
+    # qs = Post.objects.all()  # query all the posts from database
+    qs = Post.objects.all().order_by('-id')[lower_limit:upper_limit]
+    size = qs.count()  # Correct the error,  cuz of it only 3 posts are loading in the view
     data = []
     for obj in qs:
         try:
             image_ = obj.image.url
         except ValueError:
-            image_ = ''
+            image_ = None  # When there is no image with the post
 
         item = {
             'id':obj.id,
@@ -42,4 +42,4 @@ def load_post(request, no_of_posts):  # It'll take a request argument and a how 
 
         }
         data.append(item)
-    return JsonResponse({'data': data[lower_limit:upper_limit], 'size':size})
+    return JsonResponse({'data': data, 'size':size})

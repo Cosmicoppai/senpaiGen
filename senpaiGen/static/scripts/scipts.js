@@ -39,9 +39,9 @@ data: {
 success: function(response){
 clickedBtn.innerHTML = `${response.msg} | ${response.total_no_of_likes}`
 if(response.msg == 'Like'){
-clickedBtn.style.color = 'blue';
+clickedBtn.className = "btn btn-outline-info";
 }else{
-clickedBtn.style.color = 'red';
+clickedBtn.className = "btn btn-outline-danger";
 }
 },
 
@@ -50,6 +50,38 @@ console.log(error)
 clickedBtn.innerHTML += '<hr> Unable to process request! Try again Later'
 }
 })
+}))
+}
+
+
+
+const commentLoader = () => {
+const commentForm = [...document.getElementsByClassName('comment-form')]
+commentForm.forEach(form => form.addEventListener('submit', e => {
+e.preventDefault();
+const clickedPostId = e.target.getAttribute('data-postId');
+const clickedBtn = document.getElementById('`Comment-button-${clickedPostId}')
+$.ajax({
+type: 'GET',
+url: `/comment/${clickedPostId}/${visibleComment}`,
+success: function(response){
+const data = response.data
+const comments = document.getElementById(`comments-${clickedPostId}`)
+// console.log(data)
+data.forEach(el => {
+comments.innerHTML += `
+<hr>${el.comment} | ${el.author}</h4>
+<h6>${el.date_added}</h6>
+`
+})
+visibleComment += 4
+},
+error: function(response){
+console.log(error)
+clickedBtn.innerHTML = "Try again Later !..."
+}
+})
+
 }))
 }
 
@@ -73,33 +105,36 @@ $.ajax({
         post.innerHTML += ` <h3>${el.title}</h3>
           <hr>
           ${el.body}
-            <div class='post-image'>
+          <hr>
+          ${el.image?
+
+            `<div class='post-image'>
                 <img src="${el.image}/" loading="lazy">
-            </div>
+            </div>`: ``}
           <hr>
             <div>
           ${el.author} | ${el.date}
           </div>
           <hr>
-          <div id='comments'>
-          <a href='post/comment/${el.id}/'>comments | ${el.comment_count}</a>
-          </div>
+
+          <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+
+          <div id='comments-${el.id}'>
+          <form class="comment-form" data-postId="${el.id}" type="submit">
+           <button  class="btn btn-outline-secondary" id="Comment-button-${el.id}">Load Comments | ${el.comment_count}</button>
+           </form>
+            </div>
 
           <div id='like'>
-          <form class="like-unlike-form" data-postId='${el.id}' type='submit'>
-          <button id='Like-button-${el.id}' data-href='${el.id}' href="#">${el.liked ? `Unlike | ${el.like_count}`: `Like | ${el.like_count}` }</button>
-          </form>
-          </div>
+              <form class="like-unlike-form" data-postId='${el.id}' type='submit'>
+              <button class=${el.liked? `"btn btn-outline-danger"`: `"btn btn-outline-info"`} id='Like-button-${el.id}' data-href='${el.id}' href="">${el.liked ? `Unlike | ${el.like_count}`: `Like | ${el.like_count}` }</button>
+              </form>
+           </div>
+           </div>
+            <br>
+            <hr>
 
           `
-
-        // `$(el.liked ? 'Unlike' : 'Like')`
-        if(el.liked === true){
-        document.getElementById(`Like-button-${el.id}`).style.color = 'red';
-        // like_obj.innerHTML = 'Unlike'
-        }else{
-        document.getElementById(`Like-button-${el.id}`).style.color = 'blue'
-        }
         })
 
         if(response.size === 0){
@@ -111,6 +146,7 @@ $.ajax({
         else{
         visible+= 3 }
         like_count_for_posts()  // call the like counter function
+        commentLoader()  // To load comment on click
         },
     error: function(error){
         console.log(error)

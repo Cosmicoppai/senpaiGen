@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.views.generic import ListView
 from .models import Comments
@@ -12,14 +12,23 @@ from django.utils.translation import gettext as _
 
 class Comment(ListView):
     model = Comments
-    template_name = 'home.html'
-    # context_object_name = 'comments'
     ordering = 'added_at'
 
-    '''def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['nickname'] = User.nickname
-        return context'''
+    def get_queryset(self, pk, no_of_comments):
+        visible = 4
+        upper_limit = no_of_comments
+        lower_limit = upper_limit - visible
+        post_ = Post.objects.get(pk=pk)
+        qs = Comments.objects.filter(post=post_)[lower_limit:upper_limit]
+        data = []
+        size = qs.count()
+        for obj in qs:
+            item = {'comment': obj.comment,
+                    'author': obj.author.nickname,
+                    'date_added': obj.added_at.strftime("%d %b %Y "),
+                    }
+            data.append(item)
+        return JsonResponse({'data': data, 'size': size})
 
 
 @login_required
@@ -38,6 +47,6 @@ def comment_add_form(request, pk):
                 except ObjectDoesNotExist or AttributeError:
                     messages.error(request, _('Unable to add Comment'))
             messages.error(request, _('Try again later'))  # Later edit this message
-        return render(request, 'comments.html', {'commentform':form})
+        return render(request, 'comments.html', {'commentform': form})
 
     return HttpResponseRedirect("/")

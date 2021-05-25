@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model, login, authenticate
 from django.http import HttpResponseRedirect
 from .forms import LoginForm, SignupForm
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import DetailView
 from django.urls import reverse_lazy
 from django.utils.translation import gettext as _
 from .models import UserData
@@ -66,7 +66,7 @@ def user_login(request):
 
 
 @login_required
-def ProfileView(request, pk):
+def EditProfile(request, pk):
     user = User.objects.get(pk=pk)
     userform = UserView(instance=user)
     userdataform = UserDataView(instance=user.userdata)
@@ -86,8 +86,13 @@ def ProfileView(request, pk):
                     updated_user.userdata.save()
 
                     messages.success(request, _('Profile Updated Successfully'))
-                    return redirect(ProfileView, pk=pk,)
+                    return redirect(EditProfile, pk=pk,)
         return render(request, 'profile_view.html', {'pk': pk,
                                                      'userform': userform,
                                                      'userdataform': userdataform})
     raise PermissionDenied
+
+
+@login_required
+class ProfileView(DetailView):
+    model = UserData
