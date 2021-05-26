@@ -31,6 +31,19 @@ e.preventDefault();
 const clickedId = e.target.getAttribute("data-postId")  // same as e.target.attribute("data-postId") and data-postId is the id(primary key) mentioned in the form
 const clickedBtn = document.getElementById(`Like-button-${clickedId}`)
 
+const btnMsg = clickedBtn.innerHTML // Read the text on the like button
+
+if(btnMsg[0] == "L"){  // If the status is liked change it to Unliked and subtract 1 from the like count
+const likeCount = parseInt(btnMsg[btnMsg.length - 1]) + 1;
+clickedBtn.innerHTML = `Unlike | ${likeCount}`;
+clickedBtn.className = "btn btn-outline-danger";
+}
+else{  // If status is Unliked change it to the Like and add 1 like
+const likeCount = parseInt(btnMsg[btnMsg.length - 1]) - 1;
+clickedBtn.innerHTML = `Like | ${likeCount}`;
+clickedBtn.className = "btn btn-outline-info";
+}
+
 $.ajax({
 type: 'POST',
 url: `/post/like/`,
@@ -38,15 +51,6 @@ data: {
 'csrfmiddlewaretoken': csrftoken,
 'pk': clickedId,
 },
-success: function(response){
-clickedBtn.innerHTML = `${response.msg} | ${response.total_no_of_likes}`
-if(response.msg == 'Like'){
-clickedBtn.className = "btn btn-outline-info";
-}else{
-clickedBtn.className = "btn btn-outline-danger";
-}
-},
-
 error: function(error){
 console.log(error)
 clickedBtn.innerHTML += '<hr> Unable to process request! Try again Later'
@@ -116,7 +120,6 @@ $.ajax({
 
     // response data because the key in dict is 'data'(which we've assigned in the views.py of posts
     const data = response.data;  // Assign the returned response to data constant
-    console.log(data)
 
     // el is the short form of element
 
