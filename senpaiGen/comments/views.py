@@ -11,8 +11,8 @@ from django.utils.translation import gettext as _
 
 
 class Comment(ListView):
-    model = Comments
-    ordering = 'added_at'
+    # model = Comments
+    # ordering = '-added_at'
 
     def get_queryset(self, pk, no_of_comments):
         visible = 4

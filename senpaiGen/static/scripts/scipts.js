@@ -87,7 +87,6 @@ if(response.size === 0){
         document.getElementById(`comment-endbox-${clickedPostId}`).innerHTML = "<hr>No Comment have been added yet<hr><br>"
         }
         else if (response.size < visibleComment){
-        console.log(response.size, visibleComment)
         clickedBtn.classList.add('not-visible');
         document.getElementById(`comment-endbox-${clickedPostId}`).innerHTML = "<hr>No more comments...<hr><br>"
         }
