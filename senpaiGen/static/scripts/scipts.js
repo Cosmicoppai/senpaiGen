@@ -1,6 +1,7 @@
 const post = document.getElementById('post');
 const loadBtn = document.getElementById('load-more-button')
 
+
 // Csrf Token Code Copied from Django Documentation
 
 const getCookie = (name) => {
@@ -19,6 +20,7 @@ const getCookie = (name) => {
     return cookieValue;
 }
 const csrftoken = getCookie('csrftoken');
+
 
 // Ajax call to track like
 
@@ -53,30 +55,44 @@ clickedBtn.innerHTML += '<hr> Unable to process request! Try again Later'
 }))
 }
 
-
+// Comment Loader Function
 
 const commentLoader = () => {
-const commentForm = [...document.getElementsByClassName('comment-form')]
-commentForm.forEach(form => form.addEventListener('submit', e => {
+const commentDiv = [...document.getElementsByClassName('comment-button')]
+commentDiv.forEach(div => div.addEventListener('click', e => {
 e.preventDefault();
-const clickedPostId = e.target.getAttribute('data-postId');
-const clickedBtn = document.getElementById('`Comment-button-${clickedPostId}')
+const clickedPostId = e.target.getAttribute('data-postId');  //el.id
+const clickedBtn = document.getElementById(`comment-button-${clickedPostId}`)  // Id of the clicked button
+let visibleComment = parseInt(clickedBtn.getAttribute('data-visibleComment'));  // get the visibleComment attribute(i.e no of comments which we've to load)
+
 $.ajax({
 type: 'GET',
 url: `/comment/${clickedPostId}/${visibleComment}`,
+
 success: function(response){
 const data = response.data
-const comments = document.getElementById(`comments-${clickedPostId}`)
-// console.log(data)
+const comments = document.getElementById(`comments-${clickedPostId}`)  // get the div in which comments are going to load
+
 data.forEach(el => {
 comments.innerHTML += `
-<hr>${el.comment} | ${el.author}</h4>
-<h6>${el.date_added}</h6>
-`
-})
-visibleComment += 4
+<hr>${el.author} | ${el.date_added}
+<h6>${el.comment}</h6>
+`});
+
+if(response.size === 0){
+        document.getElementById(`comment-endbox-${clickedPostId}`).innerHTML = "<hr>No Comment have been added yet<hr><br>"
+        }
+        else if (response.size < visibleComment){
+        console.log(response.size, visibleComment)
+        clickedBtn.classList.add('not-visible');
+        document.getElementById(`comment-endbox-${clickedPostId}`).innerHTML = "<hr>No more comments...<hr><br>"
+        }
+        else{
+        visibleComment +=4;
+        clickedBtn.setAttribute('data-visibleComment', visibleComment);
+        }
 },
-error: function(response){
+error: function(error){
 console.log(error)
 clickedBtn.innerHTML = "Try again Later !..."
 }
@@ -86,7 +102,9 @@ clickedBtn.innerHTML = "Try again Later !..."
 }
 
 
+
 let visible = 3;
+
 
 // The below code will perform the async Http(ajax) request
 
@@ -98,6 +116,7 @@ $.ajax({
 
     // response data because the key in dict is 'data'(which we've assigned in the views.py of posts
     const data = response.data;  // Assign the returned response to data constant
+    console.log(data)
 
     // el is the short form of element
 
@@ -110,19 +129,16 @@ $.ajax({
 
             `<div class='post-image'>
                 <img src="${el.image}/" loading="lazy">
-            </div>`: ``}
-          <hr>
+            </div>  <hr>`: ``}
             <div>
           ${el.author} | ${el.date}
           </div>
           <hr>
 
-          <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+          <div class="btn-group" role="group" aria-label="Like comment Section">
 
-          <div id='comments-${el.id}'>
-          <form class="comment-form" data-postId="${el.id}" type="submit">
-           <button  class="btn btn-outline-secondary" id="Comment-button-${el.id}">Load Comments | ${el.comment_count}</button>
-           </form>
+          <div class='comments'>
+           <button  class="btn btn-outline-secondary comment-button" id="comment-button-${el.id}" data-visibleComment="4" href="" data-postId="${el.id}">Load Comments | ${el.comment_count}</button>
             </div>
 
           <div id='like'>
@@ -132,14 +148,18 @@ $.ajax({
            </div>
            </div>
             <br>
-            <hr>
+            <div id="comments-${el.id}">
+           </div>
+           <div id="comment-endbox-${el.id}"
+           </div>
+           <hr>
 
           `
         })
 
         if(response.size === 0){
         document.getElementById('endBox').innerHTML = "No Post's have been added yet"
-        }else if (response.size <= visible){
+        }else if (response.size < visible){
         loadBtn.classList.add('not-visible');
         document.getElementById('endBox').innerHTML = "That's all..."
         }

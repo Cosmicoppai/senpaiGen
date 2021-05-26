@@ -19,15 +19,14 @@ def load_post(request, no_of_posts):  # It'll take a request argument and a how 
     visible = 3
     upper_limit = no_of_posts
     lower_limit = upper_limit - visible
-    # qs = Post.objects.all()  # query all the posts from database
-    qs = Post.objects.all().order_by('-id')[lower_limit:upper_limit]
-    size = qs.count()  # Correct the error,  cuz of it only 3 posts are loading in the view
+    qs = Post.objects.all().order_by('-id')[lower_limit:upper_limit]  # Query the database and load the latest 3 post
+    size = qs.count()  # if size is less than 'visible' scipt.js will hide the 'lOAD MORE POSTS BUTTON'
     data = []
     for obj in qs:
         try:
             image_ = obj.image.url
         except ValueError:
-            image_ = None  # When there is no image with the post
+            image_ = None  # When there is no image attached with the post
 
         item = {
             'id':obj.id,

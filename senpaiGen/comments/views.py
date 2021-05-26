@@ -19,7 +19,7 @@ class Comment(ListView):
         upper_limit = no_of_comments
         lower_limit = upper_limit - visible
         post_ = Post.objects.get(pk=pk)
-        qs = Comments.objects.filter(post=post_)[lower_limit:upper_limit]
+        qs = Comments.objects.filter(post=post_).order_by('-added_at')[lower_limit:upper_limit]
         data = []
         size = qs.count()
         for obj in qs:
