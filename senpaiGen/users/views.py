@@ -93,6 +93,6 @@ def EditProfile(request, pk):
     raise PermissionDenied
 
 
-@login_required
+"""@login_required
 class ProfileView(DetailView):
-    model = UserData
+    model = UserData"""
