@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model, login, authenticate
 from django.http import HttpResponseRedirect
 from .forms import LoginForm, SignupForm
-from django.views.generic import DetailView
+from django.views.generic import DetailView, RedirectView
 from django.urls import reverse_lazy
 from django.utils.translation import gettext as _
 from .models import UserData
@@ -93,6 +93,4 @@ def EditProfile(request, pk):
     raise PermissionDenied
 
 
-"""@login_required
-class ProfileView(DetailView):
-    model = UserData"""
+# class
