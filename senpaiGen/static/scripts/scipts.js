@@ -1,6 +1,3 @@
-const post = document.getElementById('post');
-const loadBtn = document.getElementById('load-more-button')
-
 
 // Csrf Token Code Copied from Django Documentation
 
