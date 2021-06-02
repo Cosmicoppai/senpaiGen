@@ -1,9 +1,10 @@
 # from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse
-from django.views.generic import ListView
+from django.http import JsonResponse, HttpResponseRedirect
+from django.views.generic import ListView, CreateView
 from django.views import View
 from .models import Post
+from .forms import AddPostForm
 
 
 class PostListView(LoginRequiredMixin, ListView):
@@ -43,5 +44,18 @@ class LoadPost(LoginRequiredMixin, View):
             data.append(item)
         return JsonResponse({'data': data, 'size':size})
 
-    def post(self):
-        pass
+
+
+class AddPost(LoginRequiredMixin, CreateView):
+    model = Post
+    form_class = AddPostForm
+    template_name = 'post/add_post.html'
+    context_object_name = 'postForm'
+    success_url = '/'
+
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.author = self.request.user
+        post.save()
+        return HttpResponseRedirect(self.success_url)

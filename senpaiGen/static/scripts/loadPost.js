@@ -62,7 +62,7 @@ $.ajax({
 
         if(response.size === 0){
         document.getElementById('endBox').innerHTML = "No Post's have been added yet"
-        }else if (response.size < visible){
+        }else if (response.size < 3){
         loadBtn.classList.add('not-visible');
         document.getElementById('endBox').innerHTML = "That's all..."
         }
