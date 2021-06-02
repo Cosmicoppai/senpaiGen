@@ -79,8 +79,13 @@ const comments = document.getElementById(`comments-${clickedPostId}`)  // get th
 
 data.forEach(el => {
 comments.innerHTML += `
-<hr>${el.author} | ${el.date_added}
-<h6>${el.comment}</h6>
+<hr>
+<div class="card">
+<div class="card-body">
+<div class="blockquote"><p class="card-text">${el.comment}</div>
+<div class="blockquote-footer text-end">${el.author} | ${el.date_added}</div>
+</div>
+</div>
 `});
 
 if(response.size === 0){
@@ -105,80 +110,4 @@ clickedBtn.innerHTML = "Try again Later !..."
 }
 
 
-
-let visible = 3;
-
-
-// The below code will perform the async Http(ajax) request
-
-const getPost = () => {
-$.ajax({
-    type: "GET",
-    url: `/data/${visible}/`,
-    success: function(response){
-
-    // response data because the key in dict is 'data'(which we've assigned in the views.py of posts
-    const data = response.data;  // Assign the returned response to data constant
-
-    // el is the short form of element
-
-    data.forEach(el => {
-        post.innerHTML += ` <h3>${el.title}</h3>
-          <hr>
-          ${el.body}
-          <hr>
-          ${el.image?
-
-            `<div class='post-image'>
-                <img src="${el.image}/" loading="lazy">
-            </div>  <hr>`: ``}
-            <div>
-          ${el.author} | ${el.date}
-          </div>
-          <hr>
-
-          <div class="btn-group" role="group" aria-label="Like comment Section">
-
-          <div class='comments'>
-           <button  class="btn btn-outline-secondary comment-button" id="comment-button-${el.id}" data-visibleComment="4" href="" data-postId="${el.id}">Load Comments | ${el.comment_count}</button>
-            </div>
-
-          <div id='like'>
-              <form class="like-unlike-form" data-postId='${el.id}' type='submit'>
-              <button class=${el.liked? `"btn btn-outline-danger"`: `"btn btn-outline-info"`} id='Like-button-${el.id}' data-href='${el.id}' href="">${el.liked ? `Unlike | ${el.like_count}`: `Like | ${el.like_count}` }</button>
-              </form>
-           </div>
-           </div>
-            <br>
-            <div id="comments-${el.id}">
-           </div>
-           <div id="comment-endbox-${el.id}"
-           </div>
-           <hr>
-
-          `
-        })
-
-        if(response.size === 0){
-        document.getElementById('endBox').innerHTML = "No Post's have been added yet"
-        }else if (response.size < visible){
-        loadBtn.classList.add('not-visible');
-        document.getElementById('endBox').innerHTML = "That's all..."
-        }
-        else{
-        visible+= 3 }
-        like_count_for_posts()  // call the like counter function
-        commentLoader()  // To load comment on click
-        },
-    error: function(error){
-        console.log(error)
-    },
-});
-
-}
-
-getPost()
-loadBtn.addEventListener('click', () => {
-getPost()
-})
 

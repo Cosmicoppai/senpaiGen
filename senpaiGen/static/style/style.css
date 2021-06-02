@@ -32,3 +32,9 @@
 .not-visible{
 display: None;
 }
+
+.main-body{
+color:
+font-size: 20px;
+text-align: center;
+}
