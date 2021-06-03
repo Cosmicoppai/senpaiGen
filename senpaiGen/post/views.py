@@ -1,21 +1,33 @@
 # from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse, HttpResponseRedirect
-from django.views.generic import ListView, CreateView
+from django.views.generic import CreateView
 from django.views import View
 from .models import Post
 from .forms import AddPostForm
 
 
-class PostListView(LoginRequiredMixin, ListView):
+class HomeView(LoginRequiredMixin, CreateView):  # To create new post
+
     model = Post
+    form_class = AddPostForm
     template_name = 'home.html'
+    context_object_name = 'postForm'
+    success_url = '/'
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.author = self.request.user
+        post.save()
+        return HttpResponseRedirect(self.success_url)
 
 
 
 class LoadPost(LoginRequiredMixin, View):
 
-    def get(self, request, *args, **kwargs):  # It'll take a request argument and a how many posts have to be loaded
+
+    @staticmethod
+    def get(request, **kwargs):  # It'll take a request argument and a how many posts have to be loaded
         no_of_posts = kwargs['no_of_posts']
         visible = 3
         upper_limit = no_of_posts
@@ -43,19 +55,3 @@ class LoadPost(LoginRequiredMixin, View):
             }
             data.append(item)
         return JsonResponse({'data': data, 'size':size})
-
-
-
-class AddPost(LoginRequiredMixin, CreateView):
-    model = Post
-    form_class = AddPostForm
-    template_name = 'post/add_post.html'
-    context_object_name = 'postForm'
-    success_url = '/'
-
-
-    def form_valid(self, form):
-        post = form.save(commit=False)
-        post.author = self.request.user
-        post.save()
-        return HttpResponseRedirect(self.success_url)

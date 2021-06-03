@@ -36,24 +36,13 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form enctype="multipart/form-data" method="post" action="">{% csrf_token %}
-          <div class="mb-3">
-            <label for="title-name" class="col-form-label"></label>
-            <input type="text" class="form-control" id="title-name" placeholder="Title">
-          </div>
-          <div class="mb-3">
-            <label for="body-text" class="col-form-label"></label>
-            <textarea class="form-control" id="body-text" placeholder="Body"></textarea>
-          </div>
-           <div class="mb-3">
-            <label for="image" class="col-form-label"></label>
-            <input type="file" class="form-control" id="image" accept="image/*" placeholder="Image">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
+        <form enctype="multipart/form-data" method="post" action="" id="post-add-form">{% csrf_token %}
+          {{form.as_p}}
+          <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
         <button type="submit" class="btn btn-primary">Post</button>
+      </div>
+        </form>
       </div>
     </div>
   </div>
@@ -66,7 +55,6 @@
 </div>
   <br>
 <button class="btn btn-outline-dark" id="load-more-button">Load More Post's</button>
- <!-- <button id="load-more-button">Load More Post's</button> -->
   <hr>
   <div><h2 id="endBox"></h2></div>
     </body>
