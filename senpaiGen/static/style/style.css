@@ -30,7 +30,7 @@
 }
 
 .not-visible{
-display: None;
+display: None !important;
 }
 
 .main-body{
