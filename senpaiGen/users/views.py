@@ -22,7 +22,7 @@ def home_view(request):
 
 def signup(request):
     if request.user.is_authenticated:
-        return PostListView.as_view()(request)
+        return HomeView.as_view()(request)
     form = SignupForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         user = form.save()
@@ -45,7 +45,7 @@ def signup(request):
 
 def user_login(request):
     if request.user.is_authenticated:
-        return PostListView.as_view()(request)
+        return HomeView.as_view()(request)
     form = LoginForm(request.POST or None)
     if form.is_valid():
         nickname = form.cleaned_data.get('nickname')

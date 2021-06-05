@@ -14,11 +14,11 @@ class Comment(ListView):
     # model = Comments
     # ordering = '-added_at'
 
-    def get_queryset(self, pk, no_of_comments):
+    def get(self, request, *args, **kwargs):
         visible = 4
-        upper_limit = no_of_comments
+        upper_limit = kwargs['no_of_comments']
         lower_limit = upper_limit - visible
-        post_ = Post.objects.get(pk=pk)
+        post_ = Post.objects.get(pk=kwargs['pk'])
         qs = Comments.objects.filter(post=post_).order_by('-added_at')[lower_limit:upper_limit]
         data = []
         size = qs.count()
@@ -29,6 +29,7 @@ class Comment(ListView):
                     }
             data.append(item)
         return JsonResponse({'data': data, 'size': size})
+
 
 
 @login_required

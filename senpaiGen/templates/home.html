@@ -36,11 +36,11 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form enctype="multipart/form-data" method="post" action="" id="post-add-form">{% csrf_token %}
+        <form enctype="multipart/form-data" method="post" id="post-add-form">{% csrf_token %}
           {{form.as_p}}
           <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn btn-primary">Post</button>
+        <button type="submit" class="btn btn-primary" id="add-new-post">Post</button>
       </div>
         </form>
       </div>
@@ -60,5 +60,6 @@
     </body>
 
 <script type="text/javascript" src="{% static 'scripts/scipts.js' %}" async></script>
+<script type="text/javascript" src="{% static 'scripts/addPost.js' %}" async></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 </html>
