@@ -4,7 +4,7 @@ var postAddForm = document.getElementById('post-add-form')
 
 $(postAddForm).submit(function(e){
 e.preventDefault();
-$form = $(this)
+
 var formData = new FormData(this);
 $.ajax({
 type: "POST",
@@ -13,8 +13,8 @@ data: formData,
 
 success: function(response){
 postAddForm.reset();  // document.getElementById(#formId).reset()  -> It'll reset the form
-const data = response.data
-console.log(data)
+alert('Post has been Successfully posted');
+console.log(formData)
 },
 error: function(response){
 console.log(error);
