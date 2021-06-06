@@ -1,5 +1,4 @@
 from django.contrib import messages
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView
@@ -40,6 +39,11 @@ class AddComment(LoginRequiredMixin, CreateView):
     def get(self, request, *args, **kwargs):
         print("Hi")
         return render(request, 'comments.html', context={'commentform':CommentForm(self.request.POST or None)})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['add-comment-form'] = context['form']
+        return context
 
     def post(self, request, *args, **kwargs):
         form = CommentForm(request.POST or None)
