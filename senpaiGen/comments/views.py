@@ -42,7 +42,7 @@ class AddComment(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['add-comment-form'] = context['form']
+        context['add-comment-form'] = self.get_form()  # similar as context['add-comment-form'] = context['form']
         return context
 
     def post(self, request, *args, **kwargs):
