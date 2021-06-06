@@ -34,15 +34,11 @@ class Comment(ListView):
 class AddComment(LoginRequiredMixin, CreateView):
     model = Comments
     form_class = CommentForm
-    # template_name = 'home.html'
-
-    def get(self, request, *args, **kwargs):
-        print("Hi")
-        return render(request, 'comments.html', context={'commentform':CommentForm(self.request.POST or None)})
+    template_name = 'comments.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['add-comment-form'] = self.get_form()  # similar as context['add-comment-form'] = context['form']
+        context['addCommentForm'] = self.get_form()  # similar as context['add-comment-form'] = context['form']
         return context
 
     def post(self, request, *args, **kwargs):
