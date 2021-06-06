@@ -1,13 +1,13 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView, CreateView
 from .models import Comments
 from .forms import CommentForm
 from post.models import Post
 from django.utils.translation import gettext as _
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class Comment(ListView):
@@ -32,22 +32,25 @@ class Comment(ListView):
 
 
 
-@login_required
-def comment_add_form(request, pk):
-    if request.user.is_authenticated:
+class AddComment(LoginRequiredMixin, CreateView):
+    model = Comments
+    form_class = CommentForm
+    # template_name = 'home.html'
+
+    def get(self, request, *args, **kwargs):
+        print("Hi")
+        return render(request, 'comments.html', context={'commentform':CommentForm(self.request.POST or None)})
+
+    def post(self, request, *args, **kwargs):
         form = CommentForm(request.POST or None)
         if request.method == 'POST':
             if form.is_valid():
-                comment_ = form.cleaned_data.get('comment')
-                post_ = Post.objects.get(pk=pk)
-                try:
-                    comment_obj = Comments(author=request.user, post=post_, comment=comment_)
-                    comment_obj.save()
-                    messages.success(request, _('Comment added Successfully'))
-                    return HttpResponseRedirect("/")
-                except ObjectDoesNotExist or AttributeError:
-                    messages.error(request, _('Unable to add Comment'))
-            messages.error(request, _('Try again later'))  # Later edit this message
-        return render(request, 'comments.html', {'commentform': form})
-
-    return HttpResponseRedirect("/")
+                new_comment = form.save(commit=False)
+                post_ = Post.objects.get(pk=kwargs['pk'])
+                new_comment.post = post_
+                new_comment.author = self.request.user
+                new_comment.save()
+                messages.success(request, _('Comment added Successfully'))
+                return HttpResponseRedirect("/")
+            messages.error(request, _('Try Again Later'))
+            return HttpResponseRedirect('/')
