@@ -14,10 +14,10 @@ data: formData,
 success: function(response){
 postAddForm.reset();  // document.getElementById(#formId).reset()  -> It'll reset the form
 alert('Post has been Successfully posted');
-console.log(formData)
+
 },
 error: function(response){
-console.log(error);
+
 },
 cache: false,
 contentType: false,

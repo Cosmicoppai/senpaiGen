@@ -98,13 +98,46 @@ if(response.size === 0){
         }
 },
 error: function(error){
-console.log(error)
 clickedBtn.innerHTML = "Try again Later !..."
 }
 })
 
 }))
 }
+
+
+// function to add comment
+
+const addComment = () => {
+const commentForms = [...document.getElementsByClassName("comment-form")]  // Class name defined in the html form(like-form)
+commentForms.forEach(form => form.addEventListener('submit', e => {
+e.preventDefault();
+
+const newCommentPostId = e.target.getAttribute("data-postId")  // same as e.target.attribute("data-postId") and data-postId is the id(primary key) mentioned in the form
+const newCommentText = document.getElementById(`comment-area-${newCommentPostId}`)
+
+
+$.ajax({
+type: 'POST',
+url: '/post/comment/',
+data: {'csrfmiddlewaretoken':csrftoken,
+    'comment':newCommentText.value,
+    'pk':newCommentPostId,
+},
+datatype:"json",
+
+success: function(response){
+form.reset()
+document.getElementById(`comment-endbox-${newCommentPostId}`).innerHTML= `<hr> ${response.data.msg}`;
+},
+
+error: function(error){
+document.getElementById(`comment-endbox-${newCommentPostId}`).innerHTML= '<hr> Unable to process request! Try again Later'
+}
+})
+}))
+}
+
 
 
 

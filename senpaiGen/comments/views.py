@@ -1,6 +1,5 @@
 from django.contrib import messages
-from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
+from django.http import JsonResponse
 from django.views.generic import ListView, CreateView
 from .models import Comments
 from .forms import CommentForm
@@ -34,7 +33,7 @@ class Comment(ListView):
 class AddComment(LoginRequiredMixin, CreateView):
     model = Comments
     form_class = CommentForm
-    template_name = 'comments.html'
+    template_name = 'home.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -46,11 +45,11 @@ class AddComment(LoginRequiredMixin, CreateView):
         if request.method == 'POST':
             if form.is_valid():
                 new_comment = form.save(commit=False)
-                post_ = Post.objects.get(pk=kwargs['pk'])
+                post_ = Post.objects.get(pk=request.POST.get('pk'))
                 new_comment.post = post_
                 new_comment.author = self.request.user
                 new_comment.save()
-                messages.success(request, _('Comment added Successfully'))
-                return HttpResponseRedirect("/")
-            messages.error(request, _('Try Again Later'))
-            return HttpResponseRedirect('/')
+                data = {'msg': 'Comment added successfully', 'status': 200}
+                return JsonResponse({'data':data})
+            data = {'msg':'Try again Later', 'status':400}
+            return JsonResponse({'data':data})

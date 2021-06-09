@@ -9,7 +9,11 @@ class CommentForm(forms.ModelForm):
         fields = ('comment',)
 
         widgets = {
-            'comment': forms.Textarea(attrs={'class':'form-control', 'id':'new-comment', 'placeholder':'Add a Comment', 'rows':5})
+            'comment': forms.Textarea(attrs={'class':'form-control', 'placeholder':'Add a Comment', 'rows':2})
+        }
+
+        labels = {
+            'comment': '',
         }
 
         form_class = {

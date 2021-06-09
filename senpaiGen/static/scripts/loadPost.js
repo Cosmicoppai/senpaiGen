@@ -43,12 +43,17 @@ $.ajax({
             </div>
 
           <div id='like'>
-              <form class="like-unlike-form" data-postId='${el.id}' type='submit'>
+              <form class="like-unlike-form" data-postId='${el.id}' method='post'>
               <button class=${el.liked? `"btn btn-outline-danger"`: `"btn btn-outline-info"`} id='Like-button-${el.id}' data-href='${el.id}' href="">${el.liked ? `Unlike | ${el.like_count}`: `Like | ${el.like_count}` }</button>
               </form>
            </div>
            </div>
             <br>
+            <hr>
+            <form method="post" action="" class="comment-form" data-postId='${el.id}'>
+          <p><label for="new-comment"></label> <textarea name="comment" cols="40" rows="2" class="form-control" id="comment-area-${el.id}" placeholder="Add a Comment" maxlength="1000" required="true"></textarea></p>
+              <button type="submit" class="btn btn-outline-info">comment</button>
+              </form>
             <div id="comments-${el.id}">
            </div>
            <div id="comment-endbox-${el.id}"
@@ -69,8 +74,11 @@ $.ajax({
         }
         else{
         visible+= 3 }
+
         like_count_for_posts()  // call the like counter function
         commentLoader()  // To load comment on click
+        addComment()
+
         },
     error: function(error){
         console.log(error)
