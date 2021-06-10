@@ -1,8 +1,14 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Senpai Gen</title>
+    <link rel="stylesheet" href="{% static 'style/user/profileView.css' %}">
+    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' rel="stylesheet">
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></></script>
 </head>
 <body>
 <h1>Senpai Gen</h1>
@@ -13,20 +19,57 @@
     {% endfor %}
 </ul>
 {% endif %}
-<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
-{{userform.as_p}}
-    {{userdataform.as_p}}
-<button type="submit">Update*</button>
-        <br><br>
-        <a href="{% url 'home' %}">Back</a>
-</form>
-
+<div class="row py-5 px-4">
+    <div class="col-md-5 mx-auto">
+        <!-- Profile widget -->
+        <div class="bg-white shadow rounded overflow-hidden">
+            <div class="px-4 pt-0 pb-4 cover">
+                <div class="media align-items-end profile-head">
+                    <div class="profile mr-3"><img src="{{MEDIA_URL }}{{userdata.profile_pic.url}}" alt="..." width="130" class="rounded mb-2 img-thumbnail"><a href="#" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a></div>
+                    <div class="media-body mb-5 text-white">
+                        <h4 class="mt-0 mb-0" id="nickname">{{name}}</h4>
+                        <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>{{userdata.college}} </p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-light p-4 d-flex justify-content-end text-center">
+                <ul class="list-inline-item mb-0" id="username">
+                <li class="list-inline-item">
+                    <h5 class="font-weight-bold mb-0 d-block"></h5><small class="text-muted"></small>
+                    </li>
+                </ul>
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item">
+                        <h5 class="font-weight-bold mb-0 d-block">{{postCount}}</h5><small class="text-muted"> <i class="fas fa-image mr-1"></i>Post's</small>
+                    </li>
+                    <li class="list-inline-item">
+                        <h5 class="font-weight-bold mb-0 d-block">745</h5><small class="text-muted"> <i class="fas fa-user mr-1"></i>Followers</small>
+                    </li>
+                    <li class="list-inline-item">
+                        <h5 class="font-weight-bold mb-0 d-block">340</h5><small class="text-muted"> <i class="fas fa-user mr-1"></i>Following</small>
+                    </li>
+                </ul>
+            </div>
+            <div class="px-4 py-3">
+                <h5 class="mb-0">About</h5>
+                <div class="p-4 rounded shadow-sm bg-light">
+                    <p class="font-italic mb-0">{{userdata.about}}</p>
+                    <p class="font-italic mb-0">Lives in New York</p>
+                    <p class="font-italic mb-0">Photographer</p>
+                </div>
+            </div>
+            <div class="py-4 px-4">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h5 class="mb-0">Recent post's {{userdata.posts}}</h5><a href="#" class="btn btn-link text-muted">Show all</a>
+                </div>
+                <div class="row" id="post-row">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
-<script>
-{% if messages %}
-{% for message in messages %}
-    alert('{{message}}')
-    {% endfor %}
-   {% endif %}
-</script>
+<script type="text/javascript" src="{% static 'scripts/user/userProfile.js'%}" async></script>
+<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js'></script>
+
 </html>

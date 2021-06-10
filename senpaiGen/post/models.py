@@ -5,7 +5,7 @@ import PIL.Image as Image
 
 
 class Post(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('Author'))
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('Author'), related_name='posts')
     title = models.CharField(verbose_name=_('Title'), max_length=100, blank=False, null=False)
     body = models.TextField(verbose_name=_('Body'), max_length=10000, null=False, blank=False)
     image = models.ImageField(verbose_name=_('Image'), blank=True, null=True, upload_to='post')

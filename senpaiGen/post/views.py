@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -76,3 +77,31 @@ class LoadPost(LoginRequiredMixin, ListView):  # To load(get) posts
             }
             data.append(item)
         return JsonResponse({'data': data, 'size':size})
+
+
+
+@login_required
+def post_list_on_userProfile(request, **kwargs):
+    visible = 4
+    no_of_posts = kwargs.get('no_of_posts')
+    author_ = kwargs['author']
+    upper_limit = no_of_posts
+    lower_limit = upper_limit - visible
+    qs = Post.objects.filter(author__nickname=author_).order_by('-date_added')[lower_limit:upper_limit]  # Query the database and load the latest 3 post
+    size = qs.count()  # if size is less than 'visible' scipt.js will hide the 'lOAD MORE POSTS BUTTON'
+    data = []
+    for obj in qs:
+        try:
+            image_ = obj.image.url
+        except ValueError:
+            image_ = None  # When there is no image attached with the post
+
+        item = {
+            'id': obj.id,
+            'title': obj.title,
+            'image': image_,
+            'date': obj.date_added.strftime("%d %b %Y "),  # To convert the datetime object into string
+
+        }
+        data.append(item)
+    return JsonResponse({'data': data, 'size': size})

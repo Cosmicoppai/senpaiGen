@@ -8,6 +8,10 @@ from django.utils.translation import gettext as _
 from django.contrib import messages
 from .forms import UserView, UserDataView
 from post.views import HomeView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import DetailView
+from .models import UserData
+from post.models import Post
 
 # User Model (AbstractBaseUser)
 User = get_user_model()
@@ -88,4 +92,14 @@ def EditProfile(request, pk):
     raise PermissionDenied
 
 
-# class
+
+class ProfileView(LoginRequiredMixin, DetailView):
+    model = UserData
+    template_name = 'profile_view.html'
+    context_object_name = 'userdata'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['name'] = context['userdata'].user.nickname
+        context['postCount'] = Post.objects.filter(author__nickname=context['name']).count()
+        return context
