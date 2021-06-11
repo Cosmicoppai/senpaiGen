@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model, login, authenticate
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect
 from .forms import LoginForm, SignupForm
 from django.utils.translation import gettext as _
 from django.contrib import messages
@@ -114,5 +114,6 @@ class ProfileRedirect(LoginRequiredMixin, RedirectView):
             url = reverse('ProfileView', kwargs={'pk':obj.id})
             return url
         except ObjectDoesNotExist:
-            return Http404
+            url = '/'
+            return url
 
