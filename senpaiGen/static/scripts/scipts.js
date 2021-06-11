@@ -80,7 +80,7 @@ comments.innerHTML += `
 <div class="card">
 <div class="card-body">
 <div class="blockquote"><p class="card-text">${el.comment}</div>
-<div class="blockquote-footer text-end">${el.author} | ${el.date_added}</div>
+<div class="blockquote-footer text-end"><a href="/profile/${el.author}">${el.author}</a> | ${el.date_added}</div>
 </div>
 </div>
 `});

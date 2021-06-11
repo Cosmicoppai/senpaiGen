@@ -111,8 +111,7 @@ class ProfileRedirect(LoginRequiredMixin, RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         try:
             obj = User.objects.get(nickname=kwargs['nickname'])
-            pk_ = obj.id
-            url = reverse('ProfileView', kwargs={'pk':pk_})
+            url = reverse('ProfileView', kwargs={'pk':obj.id})
             return url
         except ObjectDoesNotExist:
             return Http404
