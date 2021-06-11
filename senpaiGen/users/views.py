@@ -116,4 +116,3 @@ class ProfileRedirect(LoginRequiredMixin, RedirectView):
         except ObjectDoesNotExist:
             url = '/'
             return url
-
