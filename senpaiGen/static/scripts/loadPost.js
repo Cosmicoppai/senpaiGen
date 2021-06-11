@@ -31,7 +31,7 @@ $.ajax({
                 <img src="${el.image}/" loading="lazy" class="img-fluid">
             </div> <hr>`: ``}
             <p class="blockquote-footer text-end">
-                ${el.author} | ${el.date}
+                <a href="/profile/${el.author}">${el.author}</a> | ${el.date}
           <hr>
           </div>
           <div class="card-body">

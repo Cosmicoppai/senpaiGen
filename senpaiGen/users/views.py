@@ -2,16 +2,18 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model, login, authenticate
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from .forms import LoginForm, SignupForm
 from django.utils.translation import gettext as _
 from django.contrib import messages
 from .forms import UserView, UserDataView
 from post.views import HomeView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import DetailView
+from django.views.generic import DetailView, RedirectView
 from .models import UserData
 from post.models import Post
+from django.core.exceptions import ObjectDoesNotExist
+from django.urls.base import reverse
 
 # User Model (AbstractBaseUser)
 User = get_user_model()
@@ -86,7 +88,7 @@ def EditProfile(request, pk):
 
                     messages.success(request, _('Profile Updated Successfully'))
                     return redirect(EditProfile, pk=pk,)
-        return render(request, 'profile_view.html', {'pk': pk,
+        return render(request, 'user-profile/edit_profile_view.html', {'pk': pk,
                                                      'userform': userform,
                                                      'userdataform': userdataform})
     raise PermissionDenied
@@ -95,7 +97,7 @@ def EditProfile(request, pk):
 
 class ProfileView(LoginRequiredMixin, DetailView):
     model = UserData
-    template_name = 'profile_view.html'
+    template_name = 'user-profile/profile_view.html'
     context_object_name = 'userdata'
 
     def get_context_data(self, **kwargs):
@@ -103,3 +105,15 @@ class ProfileView(LoginRequiredMixin, DetailView):
         context['name'] = context['userdata'].user.nickname
         context['postCount'] = Post.objects.filter(author__nickname=context['name']).count()
         return context
+
+
+class ProfileRedirect(LoginRequiredMixin, RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        try:
+            obj = User.objects.get(nickname=kwargs['nickname'])
+            pk_ = obj.id
+            url = reverse('ProfileView', kwargs={'pk':pk_})
+            return url
+        except ObjectDoesNotExist:
+            return Http404
+
